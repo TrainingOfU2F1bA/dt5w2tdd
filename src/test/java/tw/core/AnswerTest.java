@@ -33,7 +33,7 @@ public class AnswerTest {
     @Test
     public void testCheck() {
         Record check = answer.check(Answer.createAnswer("1 2 3 4"));
-        Assert.assertEquals(new int[]{4,0},check.getValue());
+        Assert.assertArrayEquals(new int[]{4,0},check.getValue());
     }
 
     @Test(expected = OutOfRangeAnswerException.class)
