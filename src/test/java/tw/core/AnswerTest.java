@@ -14,7 +14,7 @@ public class AnswerTest {
     private Answer answer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         answer = Answer.createAnswer("1 2 3 4");
     }
 

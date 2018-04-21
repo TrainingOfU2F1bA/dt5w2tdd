@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import tw.commands.InputCommand;
 import tw.core.Answer;
 import tw.core.Game;
+import tw.core.exception.OutOfRangeAnswerException;
 import tw.core.generator.AnswerGenerator;
 import tw.views.GameView;
 
@@ -24,7 +25,7 @@ public class GameControllerTest {
     private ByteArrayOutputStream out=new ByteArrayOutputStream(2048);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws OutOfRangeAnswerException {
         System.setOut(new PrintStream(out));
         answerGenerator = Mockito.mock(AnswerGenerator.class);
         Mockito.when(answerGenerator.generate()).thenReturn(Answer.createAnswer("1 2 3 4"));

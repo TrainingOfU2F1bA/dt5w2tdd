@@ -16,7 +16,7 @@ public class AnswerGeneratorTest {
     private AnswerGenerator answerGenerator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         randomIntGenerator = Mockito.mock(RandomIntGenerator.class);
         answerGenerator = new AnswerGenerator(randomIntGenerator);
     }

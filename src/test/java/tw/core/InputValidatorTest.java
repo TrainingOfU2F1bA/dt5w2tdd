@@ -13,7 +13,7 @@ public class InputValidatorTest {
     private InputValidator inputValidator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         inputValidator = new InputValidator();
     }
 

@@ -21,7 +21,7 @@ public class GameTest {
     private AnswerGenerator answerGenerator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws OutOfRangeAnswerException {
         answerGenerator = Mockito.mock(AnswerGenerator.class);
         Mockito.when(answerGenerator.generate()).thenReturn(Answer.createAnswer("1 2 3 4"));
         game=new Game(answerGenerator);
