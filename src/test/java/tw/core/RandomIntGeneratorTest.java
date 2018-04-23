@@ -21,8 +21,7 @@ public class RandomIntGeneratorTest {
 
     @Test
     public void testGenerateNums() {
-        InputValidator inputValidator = new InputValidator();
-        Boolean validate = inputValidator.validate(randomIntGenerator.generateNums(9, 4));
+        Boolean validate = new InputValidator().validate(randomIntGenerator.generateNums(9, 4));
         Assert.assertEquals(true,validate);
     }
 }

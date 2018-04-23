@@ -17,46 +17,51 @@ import java.util.stream.IntStream;
 
 public class GameTest {
 
+    public static final String A3_B0 = "3A0B";
+    public static final String A4_B0 = "4A0B";
+    public static final String s1_2_3_4 = "1 2 3 4";
+    public static final String s9_2_3_4 = "9 2 3 4";
     private Game game;
     private AnswerGenerator answerGenerator;
+    private Answer answer1 = Answer.createAnswer(s1_2_3_4);
+    private Answer answer2 = Answer.createAnswer(s9_2_3_4);
 
     @Before
     public void setUp() throws OutOfRangeAnswerException {
         answerGenerator = Mockito.mock(AnswerGenerator.class);
-        Mockito.when(answerGenerator.generate()).thenReturn(Answer.createAnswer("1 2 3 4"));
+        Mockito.when(answerGenerator.generate()).thenReturn(answer1);
         game=new Game(answerGenerator);
     }
 
     @Test
     public void testGuess() throws OutOfRangeAnswerException {
-        GuessResult b = game.guess(Answer.createAnswer("1 2 3 4"));
-        Assert.assertEquals("4A0B",b.getResult());
+        GuessResult b = game.guess(answer1);
+        Assert.assertEquals(A4_B0,b.getResult());
     }
 
     @Test
     public void testGuessFalse() throws OutOfRangeAnswerException {
-        GuessResult b = game.guess(Answer.createAnswer("9 2 3 4"));
-        Assert.assertEquals("3A0B", b.getResult());
+        GuessResult b = game.guess(answer2);
+        Assert.assertEquals(A3_B0, b.getResult());
     }
 
     @Test
-    public void testCheckStatus() {
-        Answer answer = Answer.createAnswer("9 2 3 4");
-        IntStream.range(1,5).boxed().map(x->answer).forEach(game::guess);
-        Assert.assertEquals(GameStatus.CONTINUE,game.checkStatus());
-        game.guess(Answer.createAnswer("1 2 3 4"));
-        Assert.assertEquals(GameStatus.SUCCESS,game.checkStatus());
-        game.guess(Answer.createAnswer("1 2 3 4"));
+    public void testCheckFail() {
+        IntStream.range(1,6).boxed().map(x->answer2).forEach(game::guess);
+        game.guess(answer1);
         Assert.assertEquals(GameStatus.FAIL,game.checkStatus());
     }
 
     @Test
+    public void testCheckSuccess() {
+        game.guess(answer1);
+        Assert.assertEquals(GameStatus.SUCCESS,game.checkStatus());
+    }
+
+    @Test
     public void testCheckCoutinue() {
-        Answer answer = Answer.createAnswer("9 2 3 4");
-        IntStream.range(1,6).boxed().map(x->answer).forEach(game::guess);
+        IntStream.range(1,6).boxed().map(x->answer2).forEach(game::guess);
         Assert.assertTrue(game.checkCoutinue());
-        game.guess(Answer.createAnswer("1 2 3 4"));
-        Assert.assertFalse(game.checkCoutinue());
     }
 
 }

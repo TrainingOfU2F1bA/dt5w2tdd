@@ -1,44 +1,37 @@
 package tw.core;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import tw.core.exception.OutOfRangeAnswerException;
-import tw.core.model.Record;
 
 /**
  * 在AnswerTest文件中完成Answer中对应的单元测试
  */
 public class AnswerTest {
 
-    private Answer answer;
-
-    @Before
-    public void setUp() {
-        answer = Answer.createAnswer("1 2 3 4");
-    }
+    public static final String s1_2_3_4 = "1 2 3 4";
+    public static final String s1_32_4_2 = "1 32 4 2";
+    public static final String NUM = "4";
+    public static final int[] EXPECTEDS = {4, 0};
+    private Answer answer = Answer.createAnswer(s1_2_3_4);
 
     @Test
-    public void name() {
-        String s = answer.toString();
-        Assert.assertEquals("1 2 3 4",s);
+    public void testToString() {
+        Assert.assertEquals(s1_2_3_4, answer.toString());
     }
 
     @Test
     public void testGetIndexOfNum() {
-        int indexOfNum = answer.getIndexOfNum("4");
-        Assert.assertEquals(3,indexOfNum);
+        Assert.assertEquals(3, answer.getIndexOfNum(NUM));
     }
 
     @Test
     public void testCheck() {
-        Record check = answer.check(Answer.createAnswer("1 2 3 4"));
-        Assert.assertArrayEquals(new int[]{4,0},check.getValue());
+        Assert.assertArrayEquals(EXPECTEDS, answer.check(answer).getValue());
     }
 
     @Test(expected = OutOfRangeAnswerException.class)
     public void testValidate() throws OutOfRangeAnswerException {
-        answer=Answer.createAnswer("1 32 4 2");
-        answer.validate();
+        Answer.createAnswer(s1_32_4_2).validate();
     }
 }

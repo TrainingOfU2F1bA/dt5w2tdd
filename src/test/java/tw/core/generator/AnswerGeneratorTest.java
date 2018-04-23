@@ -1,6 +1,5 @@
 package tw.core.generator;
 
-import javafx.beans.binding.When;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import tw.core.exception.OutOfRangeAnswerException;
  */
 public class AnswerGeneratorTest {
 
+    public static final String NUM_STR_1_2_3_4 = "1 2 3 4";
     private RandomIntGenerator randomIntGenerator;
     private AnswerGenerator answerGenerator;
 
@@ -23,8 +23,8 @@ public class AnswerGeneratorTest {
 
     @Test
     public void testGemerate() throws OutOfRangeAnswerException {
-        Mockito.when(randomIntGenerator.generateNums(9,4)).thenReturn("1 2 3 4");
-        Assert.assertEquals("1 2 3 4",answerGenerator.generate().toString());
+        Mockito.when(randomIntGenerator.generateNums(9,4)).thenReturn(NUM_STR_1_2_3_4);
+        Assert.assertEquals(NUM_STR_1_2_3_4,answerGenerator.generate().toString());
     }
 }
 

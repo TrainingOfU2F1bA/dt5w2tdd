@@ -19,6 +19,11 @@ import java.io.PrintStream;
  * 在GameControllerTest文件中完成GameController中对应的单元测试
  */
 public class GameControllerTest {
+    public static final String GUESS_NUMBER_GAME_YOU_HAVE_6_CHANCES_TO_GUESS = "------Guess Number Game, You have 6 chances to guess!  ------";
+    public static final String INPUT_STR_2_3_4_5 = "2 3 4 5";
+    public static final String INPUT_STR_1_2_3_4 = "1 2 3 4";
+    public static final String RESULT_1 = "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 4A0B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 1 2 3 4, Guess Result: 4A0B]\r\n" + "Game Status: success";
+    public static final String RESULT_2 = "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 0A3B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "Guess Result: 4A0B\r\n" + "Guess History:\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" + "[Guess Numbers: 1 2 3 4, Guess Result: 4A0B]\r\n" + "Game Status: fail";
     private Game game;
     private AnswerGenerator answerGenerator;
     private GameController gameController;
@@ -28,74 +33,31 @@ public class GameControllerTest {
     public void setUp() throws OutOfRangeAnswerException {
         System.setOut(new PrintStream(out));
         answerGenerator = Mockito.mock(AnswerGenerator.class);
-        Mockito.when(answerGenerator.generate()).thenReturn(Answer.createAnswer("1 2 3 4"));
+        Mockito.when(answerGenerator.generate()).thenReturn(Answer.createAnswer(INPUT_STR_1_2_3_4));
         game=new Game(answerGenerator);
-        GameView gameView=new GameView();
-        gameController= new GameController(game,gameView);
+        gameController= new GameController(game, new GameView());
     }
 
     @Test
     public void testBeginGame() throws IOException {
         gameController.beginGame();
-        Assert.assertTrue( out.toString().contains("------Guess Number Game, You have 6 chances to guess!  ------"));
+        Assert.assertTrue( out.toString().contains(GUESS_NUMBER_GAME_YOU_HAVE_6_CHANCES_TO_GUESS));
     }
 
     @Test
     public void testPlay() throws IOException {
         InputCommand command = Mockito.mock(InputCommand.class);
-        Mockito.when(command.input()).thenReturn(Answer.createAnswer("2 3 4 5"),Answer.createAnswer("1 2 3 4"));
+        Mockito.when(command.input()).thenReturn(Answer.createAnswer(INPUT_STR_2_3_4_5),Answer.createAnswer(INPUT_STR_1_2_3_4));
         gameController.play(command);
-        Assert.assertTrue(out.toString().contains(
-        "Guess Result: 0A3B\r\n" +
-                "Guess History:\r\n" +
-                "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                "Guess Result: 4A0B\r\n" +
-                "Guess History:\r\n" +
-                "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                "[Guess Numbers: 1 2 3 4, Guess Result: 4A0B]\r\n" +
-                "Game Status: success"));
+        Assert.assertTrue(out.toString().contains(RESULT_1));
     }
 
     @Test
     public void testPlayAndCantCoutinue() throws IOException {
         InputCommand command = Mockito.mock(InputCommand.class);
-        Mockito.when(command.input()).thenReturn(Answer.createAnswer("2 3 4 5"),Answer.createAnswer("2 3 4 5"),
-                Answer.createAnswer("2 3 4 5"),Answer.createAnswer("2 3 4 5"),Answer.createAnswer("2 3 4 5"),Answer.createAnswer("1 2 3 4"));
+        Mockito.when(command.input()).thenReturn(Answer.createAnswer(INPUT_STR_2_3_4_5),Answer.createAnswer(INPUT_STR_2_3_4_5),Answer.createAnswer(INPUT_STR_2_3_4_5),
+                Answer.createAnswer(INPUT_STR_2_3_4_5),Answer.createAnswer(INPUT_STR_2_3_4_5),Answer.createAnswer(INPUT_STR_1_2_3_4));
         gameController.play(command);
-        Assert.assertTrue(out.toString().contains(
-                "Guess Result: 0A3B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "Guess Result: 0A3B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "Guess Result: 0A3B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "Guess Result: 0A3B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "Guess Result: 0A3B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "Guess Result: 4A0B\r\n" +
-                        "Guess History:\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 2 3 4 5, Guess Result: 0A3B]\r\n" +
-                        "[Guess Numbers: 1 2 3 4, Guess Result: 4A0B]\r\n" +
-                        "Game Status: fail"));
+        Assert.assertTrue(out.toString().contains(RESULT_2));
     }
 }
